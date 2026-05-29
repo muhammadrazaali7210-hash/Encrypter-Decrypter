@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS Crypt Cipher - Secure Storage Node</title>
+    <style>
+        :root {
+            --bg-color: #0a0f1d;
+            --container-bg: #111827;
+            --accent-blue: #0ea5e9;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #1f2937;
+            --input-bg: #1f2937;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            color: var(--accent-blue);
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+        header p {
+            color: var(--text-muted);
+            margin: 5px 0 0 0;
+            font-size: 14px;
+        }
+        .main-wrapper {
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .section-card {
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .section-title span {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            background-color: rgba(14, 165, 233, 0.2);
+            color: var(--accent-blue);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 14px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        input:focus, textarea:focus {
+            outline: 1px solid var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+        .file-input-wrapper {
+            background-color: var(--bg-color);
+            border: 1px dashed var(--accent-blue);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .btn-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .action-btn {
+            flex: 1;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .action-btn:hover { opacity: 0.9; }
+        .btn-encrypt { background-color: var(--accent-blue); }
+        .btn-decrypt { background-color: var(--accent-green); }
+        
+        .status-panel {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--accent-green);
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+        }
+        .status-error { color: var(--accent-red); border-color: var(--accent-red); }
+        
+        .gateway-banner {
+            background: rgba(14,165,233,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .gateway-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .gateway-link strong { color: var(--accent-blue); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>JARVIS Crypt Cipher</h1>
+        <p>Offline Crypto Engine • Powered by Web Crypto API, Sir</p>
+    </header>
+
+    <div class="main-wrapper">
+
+        <div class="gateway-banner">
+            <a href="https://muhammadrazaali7210-hash.github.io/AliRazaConverter/" target="_blank" class="gateway-link">
+                ← Return to <strong>Ali Raza Converter Portal</strong>
+            </a>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title">Text Cipher Matrix <span>Text Base</span></div>
+            
+            <div class="input-group">
+                <label>Target Key / Password:</label>
+                <input type="password" id="textPassword" placeholder="Enter secure passphrase string...">
+            </div>
+            
+            <div class="input-group">
+                <label>Input Text (Raw message to lock OR encrypted payload to unlock):</label>
+                <textarea id="textInput" placeholder="Type or paste payload components here..."></textarea>
+            </div>
+            
+            <div class="btn-container">
+                <button class="action-btn btn-encrypt" onclick="executeTextCipher(true)">Encrypt Text</button>
+                <button class="action-btn btn-decrypt" onclick="executeTextCipher(false)">Decrypt Text</button>
+            </div>
+            
+            <div class="status-panel" id="textLog"></div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title">File Shield Matrix <span>Binary Assets</span></div>
+            
+            <div class="input-group">
+                <label>Target Key / Password:</label>
+                <input type="password" id="filePassword" placeholder="Enter secure passphrase string...">
+            </div>
+            
+            <div class="input-group">
+                <label>Select Target File Node (Any extension up to high-capacity storage items):</label>
+                <div class="file-input-wrapper">
+                    <div id="fileLabel" style="color: var(--text-muted); font-size: 13px;">Drop file asset target here or <span>browse files</span></div>
+                    <input type="file" id="fileTarget" onchange="document.getElementById('fileLabel').innerHTML = 'Asset Staged: <strong>' + this.files[0].name + '</strong>'">
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button class="action-btn btn-encrypt" onclick="executeFileShield(true)">Encrypt Asset File</button>
+                <button class="action-btn btn-decrypt" onclick="executeFileShield(false)">Decrypt Asset File</button>
+            </div>
+            
+            <div class="status-panel" id="fileLog"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // Standard high-security algorithm configurations (AES-GCM 256-bit parameters)
+        const CRYPTO_ALGO = "AES-GCM";
+        const KEY_DERIVATION_ALGO = "PBKDF2";
+
+        function logOutput(logId, msg, isError = false) {
+            const panel = document.getElementById(logId);
+            panel.style.display = "block";
+            panel.innerText = msg;
+            if (isError) panel.classList.add("status-error");
+            else panel.classList.remove("status-error");
+        }
+
+        // Helper: Derived Cryptographic Raw Key Array from user password strings
+        async function deriveKeyStructure(passwordStr, saltBytes) {
+            const enc = new TextEncoder();
+            const initialKeyMaterial = await crypto.subtle.importKey(
+                "raw", enc.encode(passwordStr), { name: KEY_DERIVATION_ALGO }, false, ["deriveKey"]
+            );
+            return await crypto.subtle.deriveKey(
+                {
+                    name: KEY_DERIVATION_ALGO,
+                    salt: saltBytes,
+                    iterations: 100000,
+                    hash: "SHA-256"
+                },
+                initialKeyMaterial,
+                { name: CRYPTO_ALGO, length: 256 },
+                false,
+                ["encrypt", "decrypt"]
+            );
+        }
+
+        // CORE LOGIC MODULE 1: TEXT CRYPTION
+        async function executeTextCipher(isEncrypt) {
+            const password = document.getElementById("textPassword").value;
+            const inputData = document.getElementById("textInput").value.trim();
+            const logId = "textLog";
+
+            if (!password || !inputData) {
+                logOutput(logId, "> Exception Error: Verification password and text fields are required, sir.", true);
+                return;
+            }
+
+            try {
+                if (isEncrypt) {
+                    logOutput(logId, "> Generating safe cryptographic buffers...");
+                    const salt = crypto.getRandomValues(new Uint8Array(16));
+                    const iv = crypto.getRandomValues(new Uint8Array(12));
+                    const key = await deriveKeyStructure(password, salt);
+                    
+                    const encodedText = new TextEncoder().encode(inputData);
+                    const encryptedBuffer = await crypto.subtle.encrypt(
+                        { name: CRYPTO_ALGO, iv: iv }, key, encodedText
+                    );
+
+                    // Combine Salt + IV + Ciphertext into a unified package
+                    const packingArray = new Uint8Array(salt.length + iv.length + encryptedBuffer.byteLength);
+                    packingArray.set(salt, 0);
+                    packingArray.set(iv, salt.length);
+                    packingArray.set(new Uint8Array(encryptedBuffer), salt.length + iv.length);
+
+                    // Convert binary matrix to standard base64 for easy copy/paste sharing
+                    const base64String = btoa(String.fromCharCode.apply(null, packingArray));
+                    logOutput(logId, `> Secure Text Ciphertext Generation Successful, Sir:\n\n${base64String}`);
+                } else {
+                    logOutput(logId, "> Reconstructing token structural layers...");
+                    const binaryData = Uint8Array.from(atob(inputData), c => c.charCodeAt(0));
+                    
+                    const salt = binaryData.slice(0, 16);
+                    const iv = binaryData.slice(16, 28);
+                    const ciphertext = binaryData.slice(28);
+
+                    const key = await deriveKeyStructure(password, salt);
+                    const decryptedBuffer = await crypto.subtle.decrypt(
+                        { name: CRYPTO_ALGO, iv: iv }, key, ciphertext
+                    );
+
+                    const plainText = new TextDecoder().decode(decryptedBuffer);
+                    logOutput(logId, `> Decryption Matrix Finalized. Cleartext Result, Sir:\n\n${plainText}`);
+                }
+            } catch (err) {
+                console.error(err);
+                logOutput(logId, "> Cryptographic Failure: Invalid key credential mismatch or corrupted payload string, sir.", true);
+            }
+        }
+
+        // CORE LOGIC MODULE 2: FILE SHIELD PROTECTION
+        async function executeFileShield(isEncrypt) {
+            const password = document.getElementById("filePassword").value;
+            const fileInput = document.getElementById("fileTarget").files[0];
+            const logId = "fileLog";
+
+            if (!password || !fileInput) {
+                logOutput(logId, "> Exception Error: Secure password and file targets must be explicitly linked, sir.", true);
+                return;
+            }
+
+            try {
+                logOutput(logId, "> Loading file byte block streams inside memory structures...");
+                const fileBytes = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(new Uint8Array(reader.result));
+                    reader.readAsArrayBuffer(fileInput);
+                });
+
+                if (isEncrypt) {
+                    logOutput(logId, "> Scrambling data vectors via 256-bit block cipher parameters...");
+                    const salt = crypto.getRandomValues(new Uint8Array(16));
+                    const iv = crypto.getRandomValues(new Uint8Array(12));
+                    const key = await deriveKeyStructure(password, salt);
+
+                    const encryptedFileBuffer = await crypto.subtle.encrypt(
+                        { name: CRYPTO_ALGO, iv: iv }, key, fileBytes
+                    );
+
+                    const packedFileArray = new Uint8Array(salt.length + iv.length + encryptedFileBuffer.byteLength);
+                    packedFileArray.set(salt, 0);
+                    packedFileArray.set(iv, salt.length);
+                    packedFileArray.set(new Uint8Array(encryptedFileBuffer), salt.length + iv.length);
+
+                    triggerLocalDownload(packedFileArray, fileInput.name + ".enc", "application/octet-stream");
+                    logOutput(logId, "> File Shield Activated! Your locked encrypted asset file (.enc) downloaded successfully, sir.");
+                } else {
+                    logOutput(logId, "> Deciphering packed storage nodes...");
+                    const salt = fileBytes.slice(0, 16);
+                    const iv = fileBytes.slice(16, 28);
+                    const ciphertext = fileBytes.slice(28);
+
+                    const key = await deriveKeyStructure(password, salt);
+                    const decryptedFileBuffer = await crypto.subtle.decrypt(
+                        { name: CRYPTO_ALGO, iv: iv }, key, ciphertext
+                    );
+
+                    // Reconstruct original file name sequence safely
+                    let restoredName = fileInput.name.replace(".enc", "");
+                    if (restoredName === fileInput.name) restoredName = "decrypted_asset_" + fileInput.name;
+
+                    triggerLocalDownload(new Uint8Array(decryptedFileBuffer), restoredName, "application/octet-stream");
+                    logOutput(logId, "> File Shield Decryption Successful! Restored source file downloaded cleanly, sir.");
+                }
+            } catch (err) {
+                console.error(err);
+                logOutput(logId, "> Cryptographic Failure: Authentication mismatch. Password key variant rejected, sir.", true);
+            }
+        }
+
+        function triggerLocalDownload(uint8Array, filename, mimeType) {
+            const blob = new Blob([uint8Array], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
